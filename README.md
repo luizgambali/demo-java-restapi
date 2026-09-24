@@ -72,6 +72,28 @@ export JWT_SECRET="cole-um-segredo-aleatorio-com-ao-menos-32-bytes"
 
 Por padrão, o banco local é `customers.db`. Para trocar seu local, defina `DB_URL`, por exemplo `DB_URL=jdbc:sqlite:/caminho/para/demo.db`.
 
+## Executar no IntelliJ IDEA (sem Docker)
+
+1. Crie o arquivo local de variáveis a partir do modelo:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Preencha ao menos `JWT_SECRET`. O arquivo `.env` é ignorado pelo Git e não deve ser versionado.
+
+2. Abra a pasta do projeto no IntelliJ IDEA e importe-o como projeto **Gradle**.
+
+3. Caso o suporte a arquivos `.env` não esteja disponível, instale o plugin **EnvFile** em **Settings/Preferences > Plugins**.
+
+4. Abra **Run > Edit Configurations...**, crie uma configuração **Spring Boot** e escolha a classe principal `com.example.demo.MainApp`.
+
+5. Na seção/aba **EnvFile** da configuração, marque **Enable EnvFile** e adicione o arquivo `$PROJECT_DIR$/.env`. Mantenha o diretório de trabalho como a raiz do projeto.
+
+6. Clique em **Run**. A aplicação inicia em `http://localhost:5000`, usando `customers.db` na raiz do projeto, a menos que `DB_URL` seja definido no `.env`.
+
+Se preferir não usar o plugin, copie as variáveis de `.env` para o campo **Environment variables** da configuração de execução. Não inclua valores reais dessas variáveis nos arquivos do projeto.
+
 ## Endpoints
 
 O arquivo [demo-api.postman_collection.json](demo-api.postman_collection.json) contém todos os endpoints e exemplos de requisição. Importe-o no Postman e execute **Autenticação > Login**: o token retornado é salvo automaticamente na variável da coleção `token`.
@@ -96,4 +118,3 @@ Authorization: Bearer <token>
 ## Segurança e arquivos locais
 
 `.env`, bancos SQLite, certificados, chaves e artefatos de build estão no `.gitignore`. Não versione `.env` nem `customers.db`: o banco pode conter dados pessoais e hashes de senha. Para publicar o projeto, mantenha apenas `.env.example` como referência de configuração.
-
